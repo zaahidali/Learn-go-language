@@ -15,7 +15,7 @@ func main() {
 	}
 	divideNumbers(number1, number2)
 
-	// 2 final
+	// 2 promt 2 numbers and swap their values
 	fmt.Println("\nEnter 2 numbers to swap their values")
 	_, err1 := fmt.Scan(&number1, &number2)
 	if checkError(err1) {
