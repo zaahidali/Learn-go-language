@@ -1,0 +1,1 @@
+ALTER TABLE budgets DROP COLUMN amount;

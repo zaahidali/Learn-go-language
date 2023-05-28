@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS budgets (
+  id SERIAL PRIMARY KEY
+);
+
+ALTER TABLE budgets ADD COLUMN name varchar(100);
