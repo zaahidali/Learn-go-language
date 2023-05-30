@@ -12,11 +12,11 @@ type Budget struct {
 
 type Transaction struct {
 	bun.BaseModel `bun:"transactions"`
-	ID            int64   `bun:"id,pk"`
+	ID            int64   `bun:"id,autoincrement,pk"`
 	Amount        float64 `bun:"amount"`
 	Type          string  `bun:"type"`
 	BudgetID      int64   `bun:"budget_id"` // foregin key of the budget
-	Budget        *Budget `bun:"rel:belongs-to"`
+	Budget        *Budget `bun:"rel:belongs-to,join:budget_id=id"`
 }
 
 // write migrations to make the budget id a primary key if it is not

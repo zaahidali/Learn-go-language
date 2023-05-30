@@ -6,16 +6,16 @@ run:
 	go run .
 
 migrate-up:
-	migrate -database $$(DATABASE_URL) -path migrations up
+	migrate -database $(DATABASE_URL) -path migrations up
 
 migrate-down:
-	migrate -database $$(DATABASE_URL) -path migrations down
+	migrate -database $(DATABASE_URL) -path migrations down
 
 create-migration:
 ifeq ($(filter-out $@,$(MAKECMDGOALS)),)
-	@echo "Error: 'table' parameter is required. Usage: make create-migration <table>"
+	@echo "Error: 'name' parameter is required. Usage: make create-migration <name>"
 else
-	migrate create -ext sql -dir migrations -seq create_$(filter-out $@,$(MAKECMDGOALS))_table
+	migrate create -ext sql -dir migrations -seq $(filter-out $@,$(MAKECMDGOALS))
 endif
 
 %:
@@ -31,4 +31,3 @@ endif
 
 %:
 	@:
- 

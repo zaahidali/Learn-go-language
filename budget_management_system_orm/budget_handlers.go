@@ -15,17 +15,15 @@ func addNewItem(c *gin.Context) {
 	var newItem Budget
 
 	if err := c.BindJSON(&newItem); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON input"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
 	_, err := db.NewInsert().Model(&newItem).Exec(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert new item"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.IndentedJSON(http.StatusCreated, newItem)
+	c.JSON(http.StatusCreated, newItem)
 }
 
 // func getAllItems(c *gin.Context) {
@@ -56,7 +54,7 @@ func getPaginatedItems(c *gin.Context) {
 	offset := (pageLimit - 1) * limitNum
 
 	err = db.NewSelect().
-		Model(&allItems).Limit(limitNum).
+		Model(&allItems).Limit(limitNum).Relation("Transaction").
 		Offset(offset).Order("id ASC").Scan(c.Request.Context())
 
 	if err != nil {
@@ -79,7 +77,7 @@ func getItemByID(c *gin.Context) {
 		c.JSON(http.StatusNoContent, gin.H{"error": "ID must be present"})
 	}
 
-	err := db.NewSelect().Model(&items).Limit(1).Where("id = ?", itemID).Scan(c.Request.Context())
+	err := db.NewSelect().Model(&items).Relation("Transaction").Limit(1).Where("id = ?", itemID).Scan(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -97,7 +95,7 @@ func updateExistingItem(c *gin.Context) {
 	}
 
 	if err := c.BindJSON(&updatedItem); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	_, err := db.NewUpdate().Model(&updatedItem).
@@ -106,7 +104,7 @@ func updateExistingItem(c *gin.Context) {
 		Where("id = ?", itemID).Exec(c.Request.Context())
 
 	if err != nil {
-		c.JSON(http.StatusNoContent, gin.H{"message": "No item found to update"})
+		c.JSON(http.StatusNoContent, "Unable to Update any record")
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Task Updated Successfully"})
@@ -122,9 +120,8 @@ func deleteItem(c *gin.Context) {
 
 	_, err := db.NewDelete().Model(&removedItems).Where("id = ?", itemID).Exec(c.Request.Context())
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "No item found to delete"})
+		c.JSON(http.StatusInternalServerError, "Unable to delete the record")
 		return
 	}
 	c.JSON(http.StatusOK, "Item deleted successfully!!!")
-
 }
