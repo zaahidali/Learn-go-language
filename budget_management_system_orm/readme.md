@@ -8,8 +8,8 @@ This repository contains code for a Budget Management System written in Go. It p
 - [Usage](#usage)
 - [Makefile](#makefile)
 - [Development](#development)
+- [API Endpoints](#api-endpoints)
 - [Support](#support)
-- [License](#license)
 
 ## Installation
 
@@ -61,8 +61,8 @@ The `Makefile` includes several commands:
 - `make run`: runs the application
 - `make migrate-up`: applies all up migrations
 - `make migrate-down`: rolls back all migrations
-- `make create-migration <table>`: creates a new migration for the specified table
-- `make remove-migration <migration>`: removes a specified migration
+- `make create-migration <name>`: creates a new migration with the specified name
+- `make remove-migration <migration>`: removes a specified migration file.
 
 ## Development
 
@@ -89,6 +89,27 @@ If you want to remove a migration, use:
 ```bash
 make remove-migration <migration_name>
 ```
+
+## API Endpoints
+
+This application exposes the following API endpoints:
+
+### Budget Endpoints:
+
+- `POST /budgets`: Create a new budget with name and amount.
+- `GET /budgets`: Retrieve a list of all budgets.
+- `GET /budgets/:id`: Retrieve details of a specific budget.
+- `PUT /budgets/:id`: Update a specific budget with new details.
+- `DELETE /budgets/:id`: Delete a specific budget.
+
+### Transaction Endpoints:
+
+- `POST /transactions`: Record a new transaction with details including amount, type (income or expense), and associated budget id.
+- `GET /transactions`: Retrieve a list of all transactions.
+- `GET /transactions/:id`: Retrieve details of a specific transaction.
+- `PUT /transactions/:id`: Update a specific transaction with new details.
+- `DELETE /transactions/:id`: Delete a specific transaction.
+
 
 ## Support
 
