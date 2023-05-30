@@ -16,10 +16,3 @@ The Task Manager API is a RESTful API for managing tasks. It provides endpoints 
 
 - Go programming language (version 1.16 or later)
 - Git
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/zaahidali/task-manager-api.git

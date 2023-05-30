@@ -16,10 +16,3 @@ The Library Management API is a simple RESTful API for managing books in a libra
 
 - Go programming language (version 1.16 or later)
 - Git
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/zaahidali/library-management-api.git
