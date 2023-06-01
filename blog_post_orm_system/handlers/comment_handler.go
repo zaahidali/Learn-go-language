@@ -1,10 +1,11 @@
-package main
+package handlers
 
 import (
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zaahidali/Learn-go-language/blog_post_orm_system/models"
 )
 
 /*
@@ -16,10 +17,10 @@ import (
 - `DELETE /comments/:id` - Delete a specific comment.
 */
 
-func (app *App) getComments(c *gin.Context) {
-	var comments []Comment
+func GetComments(c *gin.Context) {
+	var comments []models.Comment
 
-	err := app.DB.NewSelect().Model(&comments).Order("id ASC").Scan(c.Request.Context())
+	err := DB.NewSelect().Model(&comments).Order("id ASC").Scan(c.Request.Context())
 	if err != nil {
 		log.Printf("Error fetching comments: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch comments"})
@@ -28,15 +29,15 @@ func (app *App) getComments(c *gin.Context) {
 	c.JSON(http.StatusOK, comments)
 }
 
-func (app *App) addNewComment(c *gin.Context) {
-	var addNewComment Comment
+func AddNewComment(c *gin.Context) {
+	var addNewComment models.Comment
 
 	if err := c.BindJSON(&addNewComment); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	_, err := app.DB.NewInsert().Model(&addNewComment).Exec(c.Request.Context())
+	_, err := DB.NewInsert().Model(&addNewComment).Exec(c.Request.Context())
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -46,15 +47,15 @@ func (app *App) addNewComment(c *gin.Context) {
 	c.JSON(http.StatusCreated, addNewComment)
 }
 
-func (app *App) getCommentByID(c *gin.Context) {
-	commentID, valid := validateCommentID(c)
+func GetCommentByID(c *gin.Context) {
+	commentID, valid := ValidateCommentID(c)
 
 	if !valid {
 		return
 	}
 
-	comment := Comment{}
-	err := app.DB.NewSelect().
+	comment := models.Comment{}
+	err := DB.NewSelect().
 		Model(&comment).
 		Where("id = ?", commentID).
 		Scan(c.Request.Context())
@@ -67,15 +68,15 @@ func (app *App) getCommentByID(c *gin.Context) {
 	c.JSON(http.StatusOK, comment)
 }
 
-func (app *App) deleteCommentByID(c *gin.Context) {
-	commentID, valid := validateCommentID(c)
+func DeleteCommentByID(c *gin.Context) {
+	commentID, valid := ValidateCommentID(c)
 
 	if !valid {
 		return
 	}
 
-	comment := Comment{}
-	err := app.DB.NewDelete().
+	comment := models.Comment{}
+	err := DB.NewDelete().
 		Model(&comment).
 		Where("id = ?", commentID).
 		Scan(c.Request.Context())
@@ -88,7 +89,7 @@ func (app *App) deleteCommentByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Comment deleted successfully"})
 }
 
-func validateCommentID(c *gin.Context) (string, bool) {
+func ValidateCommentID(c *gin.Context) (string, bool) {
 	commentID := c.Param("id")
 	if commentID == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Comment ID is required"})

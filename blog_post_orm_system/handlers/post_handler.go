@@ -1,10 +1,12 @@
-package main
+package handlers
 
 import (
 	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zaahidali/Learn-go-language/blog_post_orm_system/models"
+
 )
 
 /*
@@ -16,10 +18,10 @@ import (
 - `DELETE /posts/:id` - Delete a specific post.
 */
 
-func (app *App) getPosts(c *gin.Context) {
-	var posts []Post
+func GetPosts(c *gin.Context) {
+	var posts []models.Post
 
-	err := app.DB.NewSelect().Model(&posts).Relation("Comment").Order("id ASC").Scan(c.Request.Context())
+	err := DB.NewSelect().Model(&posts).Relation("Comment").Order("id ASC").Scan(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": "No records found"})
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch posts"})
@@ -29,8 +31,8 @@ func (app *App) getPosts(c *gin.Context) {
 	c.JSON(http.StatusOK, posts)
 }
 
-func (app *App) addNewPost(c *gin.Context) {
-	var newPost Post
+func AddNewPost(c *gin.Context) {
+	var newPost models.Post
 
 	if err := c.BindJSON(&newPost); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "data": newPost})
@@ -44,7 +46,7 @@ func (app *App) addNewPost(c *gin.Context) {
 
 	fmt.Printf("New Post: %+v\n", newPost)
 
-	_, err := app.DB.NewInsert().Model(&newPost).Exec(c.Request.Context())
+	_, err := DB.NewInsert().Model(&newPost).Exec(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create new post"})
 		return
@@ -52,15 +54,15 @@ func (app *App) addNewPost(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "New Post Created"})
 }
 
-func (app *App) getPostByID(c *gin.Context) {
-	postID, valid := validatePostID(c)
+func GetPostByID(c *gin.Context) {
+	postID, valid := ValidatePostID(c)
 
 	if !valid {
 		return
 	}
 
-	var post Post
-	err := app.DB.NewSelect().Model(&post).Relation("Comment").Where("id = ?", postID).Scan(c.Request.Context())
+	var post models.Post
+	err := DB.NewSelect().Model(&post).Relation("Comment").Where("id = ?", postID).Scan(c.Request.Context())
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch post"})
@@ -71,15 +73,15 @@ func (app *App) getPostByID(c *gin.Context) {
 	c.JSON(http.StatusOK, post)
 }
 
-func (app *App) deletePostByID(c *gin.Context) {
+func DeletePostByID(c *gin.Context) {
 
-	postID, valid := validatePostID(c)
+	postID, valid := ValidatePostID(c)
 	if !valid {
 		return
 	}
 
-	var post Post
-	_, err := app.DB.NewDelete().Model(&post).Where("id = ?", postID).Exec(c.Request.Context())
+	var post models.Post
+	_, err := DB.NewDelete().Model(&post).Where("id = ?", postID).Exec(c.Request.Context())
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete post"})
@@ -89,7 +91,7 @@ func (app *App) deletePostByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Post successfully deleted!"})
 }
 
-func validatePostID(c *gin.Context) (string, bool) {
+func ValidatePostID(c *gin.Context) (string, bool) {
 	postID := c.Param("id")
 	if postID == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID must be present"})
