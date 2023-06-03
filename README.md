@@ -1,24 +1,36 @@
 # Go Practice Document
 
-## GO Language
-1. Statically type language
-1. Code compiled into binary code.
-2. Can translate code for other OS
-3. Has great garbage collector for memory management
+## Overview
+
+Welcome to the Go Practice Document, where we'll explore the features and benefits of the Go programming language. This document aims to provide a professional overview of Go and highlight its important aspects.
 
 
-## PROS:
-1. Statically Typed language -> Type checks before compilation --> Variable types are known before compilation like C, C++ & JAVA
-2. Efficient memory Management -> so it is fast
-3. Has great standard library -> which reduces needs for other external dependencies. It includes packages for HTTP, JSON, file I/O, and more.
-4. Cross-Compilation -> It allows code to be compiled for different platforms without much hassle
-5. Concurrency -> Go uses goroutines and channels to achieve lightweight and efficient concurrency. Ruby relies on threads and fibers, which are heavier and less efficient compared to goroutines.
+## Go Language
 
-## CONS:
-1. Smaller community as compared to other languages/frameworks
-2. Limited GUI Support
-3. Smaller libraries such as Rails has a lot of gems
-4. Minimalistic syntax
+Go is a statically typed programming language that compiles code into binary executables. It offers several key advantages that make it a popular choice among developers:
+
+### PROS:
+
+- **Statically Typed Language**:
+  - Type checks before compilation
+  - Variable types are known before compilation like C, C++ & Java
+- **Efficient Memory Management**:
+  - Fast and reliable
+  - Great garbage collector for memory management
+- **Extensive Standard Library**:
+  - Includes packages for HTTP, JSON, file I/O, and more
+  - Reduces the need for external dependencies
+- **Cross-Compilation**:
+  - Code can be compiled for different platforms without hassle
+- **Concurrency**:
+  - Uses goroutines and channels for lightweight and efficient concurrency
+
+### CONS:
+
+- **Smaller Community** compared to other languages/frameworks
+- **Limited GUI Support**
+- **Smaller Libraries** compared to languages like Ruby
+- **Minimalistic Syntax**
 
 
 # Basic Code Syntax
