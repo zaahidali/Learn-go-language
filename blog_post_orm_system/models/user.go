@@ -1,10 +1,6 @@
 package models
 
-import (
-	"time"
-
-	"github.com/uptrace/bun"
-)
+import "github.com/uptrace/bun"
 
 // User:
 // 	has_many :posts
@@ -24,8 +20,6 @@ type User struct {
 	ID            uint64    `bun:"id,pk,autoincrement,notnull"`
 	Name          string    `bun:"name,notnull"`
 	Email         string    `bun:"email,notnull,unique"`
-	CreatedAt     time.Time `bun:"created_at,default:current_timestamp"`
-	UpdatedAt     time.Time `bun:"updated_at,default:current_timestamp"`
-	DeletedAt     time.Time `bun:"deleted_at"`
 	Post          []*Post   `bun:"rel:has-many"`
+	SoftDelete
 }

@@ -25,7 +25,7 @@ git clone https://github.com/zaahidali/Learn-go-language/tree/master
 2. **Navigate to the directory**
 
 ```bash
-cd user_post_comment_api
+cd blog_post_orm_system
 ```
 
 3. **Install dependencies**
@@ -43,10 +43,35 @@ go mod tidy
 
 4. **Set up database**
 
-Make sure that a PostgreSQL server is running and accessible through the given connection string. The database named "user_post_comment_api" should exist. If it doesn't, you can create one:
+Make sure that a PostgreSQL server is running and accessible through the given connection string. The database named "blog_posts_orm" should exist. If it doesn't, you can create one:
 
 ```bash
-psql -U postgres -c 'create database user_post_comment_api;'
+psql -U postgres -c 'create database blog_posts_orm;'
+```
+
+5. **Install go-migrate**
+
+```bash
+# Install the migrate library
+go get -u github.com/golang-migrate/migrate/v4
+
+# Install the migrate command line tool
+go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+# Make sure the bin directory of your GOPATH is in your system's PATH
+echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
+
+# Source the bashrc file to load the new PATH into your current shell session
+source ~/.bashrc
+```
+
+6. **Run migrations**
+
+
+With the `migrate` tool installed, you can now run migrations to set up your database schema.
+
+```bash
+make migrate-up
 ```
 
 ## Usage
