@@ -73,6 +73,11 @@ func (r *queryResolver) GetUser(ctx context.Context, id string) (*model.User, er
 	return nil, fmt.Errorf("User %s not found")
 }
 
+// GetUsers is the resolver for the getUsers field.
+func (r *queryResolver) GetUsers(ctx context.Context) ([]*model.User, error) {
+	return r.users, nil
+}
+
 // GetTask is the resolver for the getTask field.
 func (r *queryResolver) GetTask(ctx context.Context, id string) (*model.Task, error) {
 	for _, task := range r.tasks {

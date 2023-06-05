@@ -22,6 +22,7 @@ enum TaskStatus {
 
 type Query {
   getUser(id: ID!): User!
+  getUsers: [User!]!
   getTask(id: ID!): Task!
   getTasks: [Task!]!
 }
