@@ -261,3 +261,67 @@ Thank you for contributing to this project! Your efforts are greatly appreciated
 ### License
 
 This project is licensed under the [MIT License](LICENSE). Feel free to use and modify the code according to your needs.
+
+<!-- # complete queries + mutations code is here -->
+
+<!-- # create user -->
+<!--  -->
+<!-- # mutation { -->
+<!-- #   createUser(name: "ali2", email: "ali@gmail.com") { -->
+<!-- # 		id -->
+<!-- #     name -->
+<!-- #     email -->
+<!-- #   } -->
+<!-- # } -->
+<!--  -->
+<!-- # get user -->
+<!--  -->
+<!-- # query { -->
+<!-- #   getUser(id: "T55"){ -->
+<!-- #     id -->
+<!-- #     name -->
+<!-- #     email -->
+<!-- #   } -->
+<!-- # } -->
+<!--  -->
+<!-- # get users -->
+<!-- # query { -->
+<!-- #   getUsers { -->
+<!-- #     id -->
+<!-- #     name -->
+<!-- #     email -->
+<!-- #   } -->
+<!-- # } -->
+<!--  -->
+<!-- # create Task -->
+<!--  -->
+<!-- # mutation { -->
+<!-- #   createTask(userId:"T55", title: "Test Title", description: "This is a test", dueDate: "June-5th-2023") { -->
+<!-- #     id -->
+<!-- #     title -->
+<!-- #     description -->
+<!-- #     dueDate -->
+<!-- #   } -->
+<!-- # } -->
+<!--  -->
+<!-- # get Task -->
+<!--  -->
+<!-- # query { -->
+<!-- #   getTask(id: "T350") { -->
+<!-- #     id -->
+<!-- #     title -->
+<!-- #     description -->
+<!-- #     dueDate -->
+<!-- #   } -->
+<!-- # } -->
+<!--  -->
+<!-- # get Tasks -->
+<!--  -->
+<!-- # query { -->
+<!-- #   getTasks{ -->
+<!-- #     id -->
+<!-- #     title -->
+<!-- #     description -->
+<!-- #     dueDate -->
+<!-- #   } -->
+<!-- # } -->

@@ -19,7 +19,7 @@ This repository contains code for a **RESTful API built in Go**, designed for **
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/zaahidali/Learn-go-language/tree/master
+git clone https://github.com/zaahidali/Learn-go-language.git
 ```
 
 2. **Navigate to the directory**

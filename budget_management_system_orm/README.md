@@ -16,7 +16,7 @@ This repository contains code for a Budget Management System written in Go. It p
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/zaahidali/budget_management_system.git
+git clone https://github.com/zaahidali/Learn-go-language.git
 ```
 
 2. **Navigate to the directory**
