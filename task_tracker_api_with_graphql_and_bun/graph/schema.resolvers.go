@@ -6,10 +6,11 @@ package graph
 
 import (
 	"context"
-	"fmt"
-	"math/big"
-	"log"
 	"crypto/rand"
+	"errors"
+	"log"
+	"math/big"
+	"time"
 
 	"github.com/Learn-go-language/task_tracker_api_with_graphql_and_bun/graph/model"
 )
@@ -36,40 +37,103 @@ func (r *mutationResolver) CreateUser(ctx context.Context, name *string, email *
 
 	return user, nil
 }
+
 // CreateTask is the resolver for the createTask field.
 func (r *mutationResolver) CreateTask(ctx context.Context, userID *string, title *string, description *string, status *model.TaskStatus, dueDate *string) (*model.Task, error) {
-	panic(fmt.Errorf("not implemented: CreateTask - createTask"))
+	randNum, err := rand.Int(rand.Reader, new(big.Int).SetInt64(9999))
+	if err != nil {
+		log.Printf("Failed to generate random ID: %v", err)
+		return nil, err
+	}
+
+	if userID == nil || title == nil || description == nil || status == nil || dueDate == nil {
+		return nil, errors.New("input parameters cannot be nil")
+	}
+
+	currentTime := time.Now().Format(time.RFC3339)
+
+	task := &model.Task{
+		ID:          randNum.String(),
+		UserID:      *userID,
+		Title:       *title,
+		Description: *description,
+		Status:      *status,
+		DueDate:     *dueDate,
+		CreatedAt:   currentTime,
+		UpdatedAt:   currentTime,
+	}
+
+	_, err = r.DB.NewInsert().Model(task).Exec(ctx)
+	if err != nil {
+		log.Printf("Failed to create task: %v", err)
+		return nil, err
+	}
+	return task, nil
 }
 
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, id *string, name *string, email *string) (*model.User, error) {
 	user := &model.User{
-		Name: *name,
+		Name:  *name,
 		Email: *email,
-  }
+	}
 	_, err := r.DB.NewUpdate().Model(user).Set("name = ?, email = ?", name, email).Where("id = ?", id).Exec(ctx)
 
-	if err!= nil {
-			log.Printf("Failed to update user: %v", err)
-			return nil, err
-		}
-		return user, nil
+	if err != nil {
+		log.Printf("Failed to update user: %v", err)
+		return nil, err
+	}
+	return user, nil
 }
 
 // DeleteUser is the resolver for the deleteUser field.
 func (r *mutationResolver) DeleteUser(ctx context.Context, id *string) (string, error) {
 	user := new(model.User)
 	_, err := r.DB.NewDelete().Model(user).Where("id =?", id).Exec(ctx)
-	if err!= nil {
-    log.Printf("Failed to delete user: %v", err)
-    return "", err
-  }
-	return user.ID, nil
+	if err != nil {
+		log.Printf("Failed to delete user: %v", err)
+		return "", err
+	}
+	return "user deleted successfully", nil
 }
 
 // UpdateTask is the resolver for the updateTask field.
 func (r *mutationResolver) UpdateTask(ctx context.Context, id *string, title *string, description *string, status *model.TaskStatus, dueDate *string) (*model.Task, error) {
-	panic(fmt.Errorf("not implemented: UpdateTask - updateTask"))
+    // Parse the incoming dueDate string into a time.Time value
+    t, err := time.Parse("2006-01-02", *dueDate)
+    if err != nil {
+        log.Printf("Failed to parse due date: %v", err)
+        return nil, err
+    }
+
+    // Format the time.Time value to the "YYYY-MM-DD" format
+    formattedDueDate := t.Format("2006-01-02")
+
+    task := &model.Task{
+        Title:       *title,
+        Description: *description,
+        Status:      *status,
+        DueDate:     formattedDueDate,
+    }
+
+    _, err = r.DB.NewUpdate().Model(task).Set("title =?, description =?, status =?, due_date =?", title, description, status, &formattedDueDate).Where("id =?", id).Exec(ctx)
+    if err != nil {
+        log.Printf("Failed to update task: %v", err)
+        return nil, err
+    }
+
+    return task, nil
+}
+
+// DeleteTask is the resolver for the deleteTask field.
+func (r *mutationResolver) DeleteTask(ctx context.Context, id *string) (string, error) {
+	task := new(model.Task)
+	_, err := r.DB.NewDelete().Model(task).Where("id =?", id).Exec(ctx)
+	if err!= nil {
+    log.Printf("Failed to delete task: %v", err)
+    return "", err
+  }
+	return "Task deleted successfully", nil
 }
 
 // GetUser is the resolver for the getUser field.
@@ -77,10 +141,10 @@ func (r *queryResolver) GetUser(ctx context.Context, id string) (*model.User, er
 	user := new(model.User)
 	err := r.DB.NewSelect().Model(user).Where("id = ?", id).Scan(ctx)
 
-	if err!= nil {
-    log.Printf("Failed to get user: %v", err)
-    return nil, err
-  }
+	if err != nil {
+		log.Printf("Failed to get user: %v", err)
+		return nil, err
+	}
 	return user, nil
 }
 
@@ -91,7 +155,7 @@ func (r *queryResolver) GetUsers(ctx context.Context) ([]*model.User, error) {
 
 	if err != nil {
 		log.Printf("Failed to get users: %v", err)
-    return nil, err
+		return nil, err
 	}
 
 	if users == nil {
@@ -103,12 +167,29 @@ func (r *queryResolver) GetUsers(ctx context.Context) ([]*model.User, error) {
 
 // GetTask is the resolver for the getTask field.
 func (r *queryResolver) GetTask(ctx context.Context, id string) (*model.Task, error) {
-	panic(fmt.Errorf("not implemented: GetTask - getTask"))
+	task := new(model.Task)
+	err := r.DB.NewSelect().Model(task).Where("id =?", id).Scan(ctx)
+	if err != nil {
+		log.Printf("Failed to get task: %v", err)
+		return nil, err
+	}
+	return task, nil
 }
 
 // GetTasks is the resolver for the getTasks field.
 func (r *queryResolver) GetTasks(ctx context.Context) ([]*model.Task, error) {
-	panic(fmt.Errorf("not implemented: GetTasks - getTasks"))
+	var tasks []*model.Task
+	err := r.DB.NewSelect().Model(&tasks).Order("id ASC").Scan(ctx)
+	if err != nil {
+		log.Printf("Failed to get tasks: %v", err)
+		return nil, err
+	}
+
+	if tasks == nil {
+		tasks = []*model.Task{}
+	}
+
+	return tasks, nil
 }
 
 // Mutation returns MutationResolver implementation.

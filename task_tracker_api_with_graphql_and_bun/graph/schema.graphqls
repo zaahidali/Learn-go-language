@@ -34,4 +34,5 @@ type Mutation {
   updateUser(id: ID, name: String, email: String): User!
   deleteUser(id: ID): ID!
   updateTask(id: ID, title: String, description: String, status: TaskStatus, dueDate: String): Task!
+  deleteTask(id: ID): ID!
 }
