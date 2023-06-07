@@ -1,14 +1,51 @@
 # Task Tracker API
 
-The Task Tracker API is a **GraphQL-based API** for managing tasks. It allows users to create tasks, update task details, and retrieve task-related information. This project is implemented using **Go**, **gqlgen**, and **Bun** for database interaction.
+The Task Tracker API is a **GraphQL-based API** for managing tasks and users. It allows users to create, update, and delete tasks, as well as create, update, and delete users. This project is implemented using **Go**, **gqlgen**, and **Bun** for database interaction.
 
 ## Features
 
 - **Create a new user** with a unique identifier
+- **Update user details** such as name and email
+- **Delete a user** by ID
 - **Create a task** associated with a user
 - **Update task details** such as title and description
-- **Retrieve task information** based on ID
 - **Delete a task** by ID
+- **Retrieve user information** based on ID
+- **Retrieve task information** based on ID
+- **Retrieve all users**
+- **Retrieve all tasks**
+
+
+ Task Tracker API
+  ├── **Create User**
+  │   ├── Input: name, email
+  │   └── Output: created user information (id, name, email)
+  ├── **Update User**
+  │   ├── Input: user ID, updated name, updated email
+  │   └── Output: updated user information (id, name, email)
+  ├── **Delete User**
+  │   ├── Input: user ID
+  │   └── Output: deleted user ID
+  ├── **Create Task**
+  │   ├── Input: user ID, task details (title, description)
+  │   └── Output: created task information (id, title, description, userId)
+  ├── **Update Task**
+  │   ├── Input: task ID, updated details (title, description)
+  │   └── Output: updated task information (id, title, description, userId)
+  ├── **Delete Task**
+  │   ├── Input: task ID
+  │   └── Output: deleted task ID
+  ├── **Get User**
+  │   ├── Input: user ID
+  │   └── Output: user information (id, name, email)
+  ├── **Get Task**
+  │   ├── Input: task ID
+  │   └── Output: task information (id, title, description, userId)
+  ├── **Get Users**
+  │   └── Output: list of all users
+  └── **Get Tasks**
+      └── Output: list of all tasks
+
 
 ## Technologies Used
 
@@ -240,6 +277,128 @@ To start a new project with gqlgen, follow these steps:
 Remember to modify the project structure and files according to your specific requirements.
 
 
+I apologize for the misunderstanding. Here's an updated version with the code and the description added to it:
+
+
+## Playground Code
+
+The following Playground code showcases how to interact with the Task Tracker API using GraphQL queries and mutations. You can use this code to test and explore the functionality of the API.
+
+### Create User
+
+```graphql
+mutation {
+  createUser(name: "John Doe", email: "john@example.com") {
+    id
+    name
+    email
+  }
+}
+```
+
+### Update User
+
+```graphql
+mutation {
+  updateUser(id: "123", name: "John Doe", email: "john@example.com") {
+    id
+    name
+    email
+  }
+}
+```
+
+### Delete User
+
+```graphql
+mutation {
+  deleteUser(id: "123")
+}
+```
+
+
+### Retrieve User
+
+```graphql
+query {
+  getUser(id: "123") {
+    id
+    name
+    email
+  }
+}
+```
+
+### Retrieve Users
+
+```graphql
+query {
+  getUsers {
+    id
+    name
+    email
+  }
+}
+```
+
+### Create Task
+
+```graphql
+mutation {
+  createTask(userId:"6993", title: "Test Title", description: "This is a test", status: COMPLETED, dueDate: "2023-06-05") {
+    id
+    title
+    description
+    dueDate
+  }
+}
+```
+
+### Update Task
+
+```graphql
+mutation {
+  updateTask(id: "4938", title: "Hello Peter", description: "I am here", status: INPROGRESS, dueDate: "2024-06-05") {
+    title
+    description
+    status
+    dueDate
+  }
+}
+```
+
+### Delete Task
+
+```graphql
+mutation {
+  deleteTask(id: "789")
+}
+```
+
+### Retrieve Task
+
+```graphql
+query {
+  getTask(id: "789") {
+    id
+    title
+    description
+  }
+}
+```
+
+### Retrieve Tasks
+
+```graphql
+query {
+  getTasks {
+    id
+    title
+    description
+    dueDate
+  }
+}
+```
 ## Contributing
 
 Your contributions are most welcome! If you'd like to improve this project, please:
