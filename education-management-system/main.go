@@ -36,7 +36,7 @@ func main() {
 	router.GET("/courses", handlers.GetCourses)
 	router.POST("/courses", handlers.AddNewCourse)
 	router.GET("/courses/:id", handlers.GetCourseByCourseId)
-	// PUT method is pending
+	// PUT & Delete methods are pending
 
 	router.GET("/enrollments", handlers.GetCourseEnrollments)
 	router.POST("/enrollments", handlers.AddNewCourseEnrollment)
@@ -45,6 +45,11 @@ func main() {
 	router.GET("/courses/:id/students", handlers.GetStudentsByCourseID) // acccess all students by course ID - all enrolled students per subject - Get all students for a course
 
 	// teacher section
+	router.GET("/teachers", handlers.GetTeachers)
+	router.POST("/teachers", handlers.AddNewCourseTeacher)
+	router.GET("/teachers/:id", handlers.GetTeachersByID)
+	router.PUT("/teachers/:id", handlers.UpdateTeacherByID)
+	router.DELETE("/teachers/:id", handlers.RemoveTeachByID)
 	router.Run()
 }
 
