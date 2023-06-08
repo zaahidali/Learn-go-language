@@ -17,35 +17,36 @@ The Task Tracker API is a **GraphQL-based API** for managing tasks and users. It
 
 
  Task Tracker API
-  ├── **Create User**
-  │   ├── Input: name, email
-  │   └── Output: created user information (id, name, email)
-  ├── **Update User**
-  │   ├── Input: user ID, updated name, updated email
-  │   └── Output: updated user information (id, name, email)
-  ├── **Delete User**
-  │   ├── Input: user ID
-  │   └── Output: deleted user ID
-  ├── **Create Task**
-  │   ├── Input: user ID, task details (title, description)
-  │   └── Output: created task information (id, title, description, userId)
-  ├── **Update Task**
-  │   ├── Input: task ID, updated details (title, description)
-  │   └── Output: updated task information (id, title, description, userId)
-  ├── **Delete Task**
-  │   ├── Input: task ID
-  │   └── Output: deleted task ID
-  ├── **Get User**
-  │   ├── Input: user ID
-  │   └── Output: user information (id, name, email)
-  ├── **Get Task**
-  │   ├── Input: task ID
-  │   └── Output: task information (id, title, description, userId)
-  ├── **Get Users**
-  │   └── Output: list of all users
-  └── **Get Tasks**
-      └── Output: list of all tasks
-
+```
+├── Create User
+│   ├── Input: name, email
+│   └── Output: created user information (id, name, email)
+├── Update User
+│   ├── Input: user ID, updated name, updated email
+│   └── Output: updated user information (id, name, email)
+├── Delete User
+│   ├── Input: user ID
+│   └── Output: deleted user ID
+├── Create Task
+│   ├── Input: user ID, task details (title, description)
+│   └── Output: created task information (id, title, description, userId)
+├── Update Task
+│   ├── Input: task ID, updated details (title, description)
+│   └── Output: updated task information (id, title, description, userId)
+├── Delete Task
+│   ├── Input: task ID
+│   └── Output: deleted task ID
+├── Get User
+│   ├── Input: user ID
+│   └── Output: user information (id, name, email)
+├── Get Task
+│   ├── Input: task ID
+│   └── Output: task information (id, title, description, userId)
+├── Get Users
+│   └── Output: list of all users
+└── Get Tasks
+    └── Output: list of all tasks
+```
 
 ## Technologies Used
 
