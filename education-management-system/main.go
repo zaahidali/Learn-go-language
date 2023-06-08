@@ -50,6 +50,7 @@ func main() {
 	router.GET("/teachers/:id", handlers.GetTeachersByID)
 	router.PUT("/teachers/:id", handlers.UpdateTeacherByID)
 	router.DELETE("/teachers/:id", handlers.RemoveTeachByID)
+	// GET /courses/:id/teacher: Fetch the teacher of a specific course pending
 	router.Run()
 }
 
