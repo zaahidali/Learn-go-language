@@ -1,4 +1,5 @@
-CREATE TABLE users (
+BEGIN;
+CREATE TABLE IF NOT EXISTS users (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   email TEXT NOT NULL UNIQUE,
@@ -6,3 +7,4 @@ CREATE TABLE users (
   updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
   deleted_at TIMESTAMP
 );
+COMMIT;
