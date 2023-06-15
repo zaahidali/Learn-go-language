@@ -14,6 +14,7 @@
 - [Slice methods](#slice-methods)
 - [Array vs Slice](#go-array-vs-slice)
 - [Go map](#go-map)
+- [Projects in Repository](#projects-in-the-repository)
 
 ## Overview
 
@@ -380,3 +381,20 @@ Here's a summary of common map operations in Go:
 | Length of the map        | Get the number of entries in the map   | `count := len(ages)`                            |
 | Iterate over the map     | Loop through the map's key-value pairs | `for key, value := range ages { ... }`          |
 
+
+# Projects in the Repository
+
+This repository also contains several projects that you can explore and use. Each project focuses on a different aspect of software development. Here is a list of the projects included along with a brief explanation:
+
+- **blog_post_orm_system**: A blog post management system with an ORM (Object-Relational Mapping) approach.
+- **Updated migrations of blog_post_orm_system**: Updated migrations for the blog post management system using ORM.
+- **budget_management_system_orm**: A budget management system implemented using an ORM approach.
+- **education-management-system**: A system for managing educational resources and information.
+- **library_management_api**: An API for managing library resources and operations.
+- **simple_blog_api**: A simple API for creating and managing blog posts.
+- **task_management_api_graphql**: An API for managing tasks using GraphQL.
+- **task_manager_api**: An API for managing tasks and tracking progress.
+- **task_manager_api_with_bun**: An API for task management using the Bun ORM.
+- **task_tracker_api_with_graphql_and_bun**: An API for tracking tasks using GraphQL and the Bun ORM.
+
+Each project has its own ***README file*** in its respective repository. You can navigate to each project's repository to find more information about the project, its purpose, and instructions on how to use it. Feel free to explore and utilize these projects according to your requirements.
