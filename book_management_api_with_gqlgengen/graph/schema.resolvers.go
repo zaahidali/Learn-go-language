@@ -6,14 +6,40 @@ package graph
 
 import (
 	"context"
+	"crypto/rand"
 	"fmt"
+	"log"
+	"math/big"
 
 	"github.com/zaahidali/book_management_api_with_gqlgengen/graph/model"
 )
 
 // CreateBook is the resolver for the createBook field.
 func (r *mutationResolver) CreateBook(ctx context.Context, title string, author string, publicationYear int, genre string) (*model.Book, error) {
-	panic(fmt.Errorf("not implemented: CreateBook - createBook"))
+	// randNum, err := rand.Int(rand.Reader, new(big.Int).SetInt64(9999))
+	randNum, err := rand.Int(rand.Reader, big.NewInt(9999))
+
+	if err != nil {
+		log.Printf("Failed to generate random ID: %v", err)
+		return nil, err
+	}
+
+	book := &model.Book{
+		ID:              randNum.String(),
+		Title:           title,
+		Author:          author,
+		PublicationYear: publicationYear,
+		Genre:           genre,
+	}
+
+	_, err = r.DB.NewInsert().Model(book).Exec(ctx)
+	if err != nil {
+		log.Printf("Failed to add book: %v", err)
+		return nil, err
+	}
+
+	return book, nil
+
 }
 
 // UpdateBook is the resolver for the updateBook field.
