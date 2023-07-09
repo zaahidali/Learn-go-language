@@ -1,4 +1,4 @@
-.PHONY: migrateup migratedown run create-migration
+.PHONY: migrateup migratedown run create-migration gqlgen
 
 DATABASE_URL := "postgres://postgres:postgres@localhost:5432/book_management_api?sslmode=disable"
 
@@ -18,16 +18,8 @@ else
 	migrate create -ext sql -dir migrations -seq $(filter-out $@,$(MAKECMDGOALS))
 endif
 
-%:
-	@:
-
-remove-migration: # CAUTION: Use this for migrations which you have not applied
-ifeq ($(filter-out $@,$(MAKECMDGOALS)),)
-	@echo "Error: 'migration' parameter is required. Usage: make remove-migration <migration>"
-else
-	rm -f migrations/$(filter-out $@,$(MAKECMDGOALS)).up.sql
-	rm -f migrations/$(filter-out $@,$(MAKECMDGOALS)).down.sql
-endif
+gqlgen:
+	go run github.com/99designs/gqlgen generate
 
 %:
 	@:

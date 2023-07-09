@@ -111,7 +111,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Book.ID(childComplexity), true
 
-	case "Book.publicationYear":
+	case "Book.publication_year":
 		if e.complexity.Book.PublicationYear == nil {
 			break
 		}
@@ -351,7 +351,7 @@ func (ec *executionContext) field_Mutation_deleteBook_args(ctx context.Context, 
 	var arg0 string
 	if tmp, ok := rawArgs["id"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -366,7 +366,7 @@ func (ec *executionContext) field_Mutation_updateBook_args(ctx context.Context, 
 	var arg0 string
 	if tmp, ok := rawArgs["id"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -432,7 +432,7 @@ func (ec *executionContext) field_Query_book_args(ctx context.Context, rawArgs m
 	var arg0 string
 	if tmp, ok := rawArgs["id"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -507,7 +507,7 @@ func (ec *executionContext) _Book_id(ctx context.Context, field graphql.Collecte
 	}
 	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Book_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -517,7 +517,7 @@ func (ec *executionContext) fieldContext_Book_id(ctx context.Context, field grap
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -611,8 +611,8 @@ func (ec *executionContext) fieldContext_Book_author(ctx context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Book_publicationYear(ctx context.Context, field graphql.CollectedField, obj *model.Book) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Book_publicationYear(ctx, field)
+func (ec *executionContext) _Book_publication_year(ctx context.Context, field graphql.CollectedField, obj *model.Book) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Book_publication_year(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -642,7 +642,7 @@ func (ec *executionContext) _Book_publicationYear(ctx context.Context, field gra
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Book_publicationYear(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Book_publication_year(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Book",
 		Field:      field,
@@ -744,8 +744,8 @@ func (ec *executionContext) fieldContext_Mutation_createBook(ctx context.Context
 				return ec.fieldContext_Book_title(ctx, field)
 			case "author":
 				return ec.fieldContext_Book_author(ctx, field)
-			case "publicationYear":
-				return ec.fieldContext_Book_publicationYear(ctx, field)
+			case "publication_year":
+				return ec.fieldContext_Book_publication_year(ctx, field)
 			case "genre":
 				return ec.fieldContext_Book_genre(ctx, field)
 			}
@@ -811,8 +811,8 @@ func (ec *executionContext) fieldContext_Mutation_updateBook(ctx context.Context
 				return ec.fieldContext_Book_title(ctx, field)
 			case "author":
 				return ec.fieldContext_Book_author(ctx, field)
-			case "publicationYear":
-				return ec.fieldContext_Book_publicationYear(ctx, field)
+			case "publication_year":
+				return ec.fieldContext_Book_publication_year(ctx, field)
 			case "genre":
 				return ec.fieldContext_Book_genre(ctx, field)
 			}
@@ -930,8 +930,8 @@ func (ec *executionContext) fieldContext_Query_book(ctx context.Context, field g
 				return ec.fieldContext_Book_title(ctx, field)
 			case "author":
 				return ec.fieldContext_Book_author(ctx, field)
-			case "publicationYear":
-				return ec.fieldContext_Book_publicationYear(ctx, field)
+			case "publication_year":
+				return ec.fieldContext_Book_publication_year(ctx, field)
 			case "genre":
 				return ec.fieldContext_Book_genre(ctx, field)
 			}
@@ -997,8 +997,8 @@ func (ec *executionContext) fieldContext_Query_books(ctx context.Context, field 
 				return ec.fieldContext_Book_title(ctx, field)
 			case "author":
 				return ec.fieldContext_Book_author(ctx, field)
-			case "publicationYear":
-				return ec.fieldContext_Book_publicationYear(ctx, field)
+			case "publication_year":
+				return ec.fieldContext_Book_publication_year(ctx, field)
 			case "genre":
 				return ec.fieldContext_Book_genre(ctx, field)
 			}
@@ -2944,8 +2944,8 @@ func (ec *executionContext) _Book(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "publicationYear":
-			out.Values[i] = ec._Book_publicationYear(ctx, field, obj)
+		case "publication_year":
+			out.Values[i] = ec._Book_publication_year(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}

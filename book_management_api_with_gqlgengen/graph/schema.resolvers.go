@@ -6,60 +6,96 @@ package graph
 
 import (
 	"context"
-	"crypto/rand"
-	"fmt"
 	"log"
-	"math/big"
 
+	"github.com/google/uuid"
 	"github.com/zaahidali/book_management_api_with_gqlgengen/graph/model"
 )
 
 // CreateBook is the resolver for the createBook field.
 func (r *mutationResolver) CreateBook(ctx context.Context, title string, author string, publicationYear int, genre string) (*model.Book, error) {
-	// randNum, err := rand.Int(rand.Reader, new(big.Int).SetInt64(9999))
-	randNum, err := rand.Int(rand.Reader, big.NewInt(9999))
-
-	if err != nil {
-		log.Printf("Failed to generate random ID: %v", err)
-		return nil, err
-	}
-
 	book := &model.Book{
-		ID:              randNum.String(),
+		ID:              uuid.New().String(),
 		Title:           title,
 		Author:          author,
 		PublicationYear: publicationYear,
 		Genre:           genre,
 	}
 
-	_, err = r.DB.NewInsert().Model(book).Exec(ctx)
-	if err != nil {
-		log.Printf("Failed to add book: %v", err)
-		return nil, err
+	_, dbErr := r.DB.NewInsert().Model(book).Exec(ctx)
+	if dbErr != nil {
+		log.Printf("Failed to add book: %v", dbErr)
+		return nil, dbErr
 	}
 
 	return book, nil
-
 }
 
-// UpdateBook is the resolver for the updateBook field.
 func (r *mutationResolver) UpdateBook(ctx context.Context, id string, title *string, author *string, publicationYear *int, genre *string) (*model.Book, error) {
-	panic(fmt.Errorf("not implemented: UpdateBook - updateBook"))
+	update := &model.Book{
+		ID: id,
+	}
+
+	if title != nil {
+		update.Title = *title
+	}
+
+	if author != nil {
+		update.Author = *author
+	}
+
+	if publicationYear != nil {
+		update.PublicationYear = *publicationYear
+	}
+
+	if genre != nil {
+		update.Genre = *genre
+	}
+
+	_, err := r.DB.NewUpdate().Model(update).Where("id = ?", id).Exec(ctx)
+	if err != nil {
+		log.Printf("failed to update book: %v", err)
+		return nil, err
+	}
+
+	return update, nil
 }
 
 // DeleteBook is the resolver for the deleteBook field.
 func (r *mutationResolver) DeleteBook(ctx context.Context, id string) (string, error) {
-	panic(fmt.Errorf("not implemented: DeleteBook - deleteBook"))
+	_, err := r.DB.NewDelete().Model(&model.Book{}).Where("id = ?", id).Exec(ctx)
+
+	if err != nil {
+		log.Printf("Failed to delete book: %v", err)
+		return "", err
+	}
+
+	return id, nil
 }
 
 // Book is the resolver for the book field.
 func (r *queryResolver) Book(ctx context.Context, id string) (*model.Book, error) {
-	panic(fmt.Errorf("not implemented: Book - book"))
+	var book model.Book
+
+	err := r.DB.NewSelect().Model(&book).Where("id = ?", id).Scan(ctx)
+	if err != nil {
+		log.Printf("failed to get book: %v", err)
+		return nil, err
+	}
+	return &book, nil
 }
 
 // Books is the resolver for the books field.
 func (r *queryResolver) Books(ctx context.Context) ([]*model.Book, error) {
-	panic(fmt.Errorf("not implemented: Books - books"))
+	var books []*model.Book
+
+	err := r.DB.NewSelect().Model(&books).Scan(ctx)
+	if err != nil {
+		log.Printf("failed to fetch books: %v", err)
+		return nil, err
+	}
+
+	return books, nil
 }
 
 // Mutation returns MutationResolver implementation.
