@@ -32,7 +32,7 @@ func main() {
 	router.Run()
 }
 
-func homePage(ctx *gin.Context) {
+func homePage(ctx *gin.Context) { // extra for testing - Not included in the blog post
 	ctx.JSON(http.StatusOK, gin.H{"message": "Welcome to the Task Manager API"})
 }
 
@@ -67,18 +67,6 @@ func removeTask(ctx *gin.Context) {
 	ctx.JSON(http.StatusNotFound, gin.H{"message": "Task not found"})
 }
 
-func addTask(ctx *gin.Context) {
-	var newTask Task
-
-	if err := ctx.ShouldBindJSON(&newTask); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	tasks = append(tasks, newTask)
-	ctx.JSON(http.StatusCreated, gin.H{"message": "Task created"})
-}
-
 func updateTask(ctx *gin.Context) {
 	id := ctx.Param("id")
 
@@ -91,7 +79,6 @@ func updateTask(ctx *gin.Context) {
 
 	for i, task := range tasks {
 		if task.ID == id {
-			// Update only the specified fields
 			if updatedTask.Title != "" {
 				tasks[i].Title = updatedTask.Title
 			}
@@ -104,6 +91,18 @@ func updateTask(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusNotFound, gin.H{"message": "Task not found"})
+}
+
+func addTask(ctx *gin.Context) {
+	var newTask Task
+
+	if err := ctx.ShouldBindJSON(&newTask); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	tasks = append(tasks, newTask)
+	ctx.JSON(http.StatusCreated, gin.H{"message": "Task created"})
 }
 
 type Task struct {
